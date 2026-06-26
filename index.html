@@ -91,8 +91,22 @@
         border-radius: 9px;
         background: #121906;
         color: var(--accent);
-        font-size: 16px;
-        font-weight: 900;
+      }
+
+      .mark svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .radar-sweep {
+        transform-origin: 12px 12px;
+        animation: radarSweep 2.4s linear infinite;
+      }
+
+      @keyframes radarSweep {
+        to {
+          transform: rotate(360deg);
+        }
       }
 
       .nav-links {
@@ -435,7 +449,15 @@
     <div class="page">
       <header class="wrap nav">
         <a class="brand" href="#">
-          <span class="mark">N</span>
+          <span class="mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" role="img">
+              <circle cx="12" cy="12" r="2.25" fill="currentColor" />
+              <path d="M12 5.25a6.75 6.75 0 1 1-6.36 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.75" />
+              <path d="M12 2.75a9.25 9.25 0 1 1-8.68 12.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.38" />
+              <path class="radar-sweep" d="M12 12V3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <circle class="radar-sweep" cx="12" cy="3.6" r="1.45" fill="currentColor" />
+            </svg>
+          </span>
           <span>NetDoc Studio</span>
         </a>
         <nav class="nav-links" aria-label="Primary">
