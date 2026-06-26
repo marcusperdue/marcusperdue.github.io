@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="NetDoc Studio is a desktop app for discovering local devices, building network documentation, and exporting client-ready PDF reports."
+    />
+    <meta property="og:title" content="NetDoc Studio" />
+    <meta property="og:description" content="Local network discovery, topology, inventory, and client-ready reports." />
+    <meta property="og:type" content="website" />
+    <title>NetDoc Studio - Local Network Documentation</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b0d0f;
+        --surface: #111418;
+        --surface-raised: #171b20;
+        --line: rgba(255, 255, 255, 0.08);
+        --line-strong: rgba(214, 255, 107, 0.34);
+        --text: #f3f0ea;
+        --muted: #a9b0ba;
+        --dim: #6f7782;
+        --accent: #d6ff6b;
+        --success: #7ddc9a;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(214, 255, 107, 0.075), transparent 28rem),
+          linear-gradient(180deg, #101317 0%, var(--bg) 34rem);
+        color: var(--text);
+        font-family:
+          "Geist",
+          "IBM Plex Sans",
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      .wrap {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 720;
+        letter-spacing: 0.01em;
+      }
+
+      .mark {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border: 1px solid var(--line-strong);
+        border-radius: 9px;
+        background: #121906;
+        color: var(--accent);
+        font-size: 16px;
+        font-weight: 900;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.88fr) minmax(460px, 1.12fr);
+        gap: 42px;
+        align-items: center;
+        padding: 68px 0 92px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.035);
+        color: var(--muted);
+        padding: 8px 12px;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 22px 0 0;
+        max-width: 760px;
+        font-size: clamp(44px, 7vw, 82px);
+        line-height: 0.94;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 620px;
+        margin: 24px 0 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.7;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 32px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        gap: 10px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        padding: 0 18px;
+        font-weight: 700;
+        transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+
+      .primary {
+        border-color: transparent;
+        background: var(--accent);
+        color: #111418;
+      }
+
+      .secondary {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+      }
+
+      .note {
+        margin-top: 18px;
+        color: var(--dim);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .app-frame {
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .window-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 38px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        padding: 0 14px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: #ff6b6b;
+      }
+
+      .dot:nth-child(2) {
+        background: #e8c766;
+      }
+
+      .dot:nth-child(3) {
+        background: #7ddc9a;
+      }
+
+      .app-shot {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        background: #0b0d0f;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .metric {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.035);
+        padding: 16px;
+      }
+
+      .metric b {
+        display: block;
+        font-size: 22px;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 6px;
+        color: var(--dim);
+        font-size: 13px;
+      }
+
+      .section {
+        padding: 28px 0 84px;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+
+      .section h2 {
+        margin: 0;
+        font-size: clamp(30px, 4vw, 44px);
+        letter-spacing: 0;
+      }
+
+      .section p {
+        margin: 0;
+        max-width: 620px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .feature {
+        min-height: 190px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--surface);
+        padding: 22px;
+      }
+
+      .feature strong {
+        display: block;
+        font-size: 18px;
+      }
+
+      .feature p {
+        margin-top: 12px;
+        font-size: 14px;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: var(--surface);
+        padding: 24px;
+      }
+
+      .panel h3 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .list {
+        display: grid;
+        gap: 12px;
+        margin: 20px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .list li {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 12px;
+        color: var(--muted);
+      }
+
+      .list b {
+        color: var(--text);
+      }
+
+      .download-band {
+        border-top: 1px solid var(--line);
+        background:
+          radial-gradient(circle at 50% 0%, rgba(214, 255, 107, 0.07), transparent 28rem),
+          #080a0c;
+        padding: 56px 0;
+      }
+
+      .download-card {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 28px;
+        align-items: center;
+        border: 1px solid var(--line-strong);
+        border-radius: 24px;
+        background: rgba(17, 20, 24, 0.86);
+        padding: 26px;
+      }
+
+      .download-card h2 {
+        margin: 0;
+        font-size: 28px;
+      }
+
+      .download-card p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      footer {
+        border-top: 1px solid var(--line);
+        padding: 24px 0 34px;
+        color: var(--dim);
+      }
+
+      .footer-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .donate {
+        border-color: rgba(214, 255, 107, 0.28);
+        background: #121906;
+        color: var(--accent);
+      }
+
+      @media (max-width: 920px) {
+        .hero,
+        .split,
+        .download-card {
+          grid-template-columns: 1fr;
+        }
+
+        .feature-grid,
+        .metrics {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .nav-links {
+          display: none;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .wrap {
+          width: min(100% - 28px, 1120px);
+        }
+
+        .hero {
+          padding-top: 40px;
+        }
+
+        .feature-grid,
+        .metrics {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-row {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="wrap nav">
+        <a class="brand" href="#">
+          <span class="mark">N</span>
+          <span>NetDoc Studio</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#features">Features</a>
+          <a href="#reports">Reports</a>
+          <a href="#download">Download</a>
+          <a href="https://github.com/sponsors/marcusperdue">Donate</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="wrap hero">
+          <div>
+            <span class="eyebrow">Desktop network documentation</span>
+            <h1>Turn a messy local network into a client-ready report.</h1>
+            <p class="lead">
+              NetDoc Studio scans local subnets, identifies devices, builds topology, and exports professional documentation for small businesses, venues, homelabs, and MSP technicians.
+            </p>
+            <div class="actions">
+              <a class="button primary" href="downloads/NetDoc-Studio-0.1.0-macOS-Apple-Silicon.dmg">Download for macOS</a>
+              <a class="button secondary" href="#features">See what it does</a>
+            </div>
+            <p class="note">Preview build for macOS Apple Silicon. Only scan networks you own or have permission to document.</p>
+          </div>
+
+          <div>
+            <div class="app-frame">
+              <div class="window-bar" aria-hidden="true">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+              <img class="app-shot" src="screenshots/dashboard.png" alt="NetDoc Studio dashboard screenshot" />
+            </div>
+            <div class="metrics" aria-label="Product highlights">
+              <div class="metric"><b>Local</b><span>Defensive subnet discovery</span></div>
+              <div class="metric"><b>PDF</b><span>Client report packs</span></div>
+              <div class="metric"><b>Map</b><span>Draggable topology</span></div>
+              <div class="metric"><b>Safe</b><span>No exploit scanning</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="features" class="wrap section">
+          <div class="section-head">
+            <h2>Built for real documentation work.</h2>
+            <p>NetDoc Studio focuses on the workflow technicians actually need: scan, review, label, map, and export.</p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature">
+              <strong>Local discovery</strong>
+              <p>Uses safe local commands, ARP parsing, ping sweeps, and optional Nmap enrichment when available.</p>
+            </article>
+            <article class="feature">
+              <strong>Device inventory</strong>
+              <p>Review hostnames, IPs, MAC addresses, vendor matches, roles, notes, and confidence scores.</p>
+            </article>
+            <article class="feature">
+              <strong>Topology canvas</strong>
+              <p>Generate an inferred network map, drag nodes, filter unknowns, and prepare a cleaner report view.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="reports" class="wrap section">
+          <div class="split">
+            <div class="panel">
+              <h3>Client report packs</h3>
+              <p style="margin-top: 12px;">Export a polished PDF with project info, scan summary, inventory, unknown devices, topology, vendor breakdown, and a technician action plan.</p>
+              <ul class="list">
+                <li><span>Executive Summary</span><b>Owners</b></li>
+                <li><span>Technical Audit</span><b>MSPs</b></li>
+                <li><span>Handoff Packet</span><b>Technicians</b></li>
+              </ul>
+            </div>
+            <div class="app-frame">
+              <div class="window-bar" aria-hidden="true">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+              <img class="app-shot" src="screenshots/topology.png" alt="NetDoc Studio topology screenshot" />
+            </div>
+          </div>
+        </section>
+
+        <section id="download" class="download-band">
+          <div class="wrap download-card">
+            <div>
+              <h2>Download NetDoc Studio</h2>
+              <p>Get the current macOS Apple Silicon preview build. The project is early, but the core workflow is already working: create a project, scan locally, review devices, build topology, and export PDF reports.</p>
+            </div>
+            <a class="button primary" href="downloads/NetDoc-Studio-0.1.0-macOS-Apple-Silicon.dmg">Download DMG</a>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <div class="wrap footer-row">
+          <span>NetDoc Studio is defensive local network documentation software.</span>
+          <a class="button donate" href="https://github.com/sponsors/marcusperdue">Donate</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
