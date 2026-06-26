@@ -176,7 +176,7 @@
       .hero {
         position: relative;
         min-height: 96svh;
-        padding: 126px 0 88px;
+        padding: 108px 0 88px;
         isolation: isolate;
       }
 
@@ -185,12 +185,13 @@
         z-index: -4;
         inset: 0;
         content: "";
-        background-image: url("screenshots/dashboard.png");
-        background-position: center top;
-        background-size: cover;
-        opacity: 0.34;
-        transform: translate3d(0, calc(var(--parallax-y, 0px) * 0.18), 0) scale(1.08);
-        filter: saturate(0.82) contrast(1.04);
+        background:
+          linear-gradient(110deg, rgba(8, 10, 12, 0.99) 0%, rgba(8, 10, 12, 0.95) 42%, rgba(8, 10, 12, 0.64) 100%),
+          repeating-linear-gradient(115deg, rgba(214, 255, 107, 0.09) 0 1px, transparent 1px 108px),
+          repeating-linear-gradient(25deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 132px),
+          #080a0c;
+        opacity: 1;
+        transform: translate3d(0, calc(var(--parallax-y, 0px) * 0.08), 0) scale(1.02);
       }
 
       .hero::after {
@@ -199,8 +200,8 @@
         inset: 0;
         content: "";
         background:
-          linear-gradient(90deg, rgba(8, 10, 12, 0.98) 0%, rgba(8, 10, 12, 0.82) 42%, rgba(8, 10, 12, 0.42) 100%),
-          linear-gradient(180deg, rgba(8, 10, 12, 0.16) 0%, #080a0c 100%);
+          linear-gradient(180deg, rgba(8, 10, 12, 0.04) 0%, #080a0c 100%),
+          linear-gradient(90deg, rgba(8, 10, 12, 0.16) 0%, rgba(8, 10, 12, 0.72) 100%);
       }
 
       .scan-field {
@@ -217,22 +218,176 @@
         transform: translate3d(0, calc(var(--parallax-y, 0px) * -0.08), 0);
       }
 
-      .hero-topology {
+      .network-backdrop {
         position: absolute;
         z-index: -1;
-        right: max(-190px, calc((100vw - 1160px) / 2 - 220px));
-        bottom: 42px;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        opacity: 0.62;
+      }
+
+      .network-backdrop svg {
+        position: absolute;
+        right: max(-60px, calc((100vw - 1160px) / 2 - 100px));
+        top: 96px;
         width: min(760px, 58vw);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 26px;
-        opacity: 0.58;
-        box-shadow: var(--shadow);
-        transform: translate3d(0, calc(var(--parallax-y, 0px) * -0.13), 0) rotate(-1.5deg);
+        min-width: 520px;
+        transform: translate3d(0, calc(var(--parallax-y, 0px) * -0.1), 0);
+      }
+
+      .hero-grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(360px, 0.68fr);
+        gap: 54px 58px;
+        align-items: center;
       }
 
       .hero-copy {
         width: min(760px, 100%);
-        padding-top: 54px;
+        padding-top: 28px;
+      }
+
+      .hero-visual {
+        position: relative;
+        align-self: center;
+        transform: translate3d(0, calc(var(--parallax-y, 0px) * -0.055), 0);
+      }
+
+      .mesh-card {
+        position: relative;
+        min-height: 440px;
+        overflow: hidden;
+        border: 1px solid rgba(214, 255, 107, 0.18);
+        border-radius: 26px;
+        background:
+          linear-gradient(180deg, rgba(17, 20, 24, 0.92), rgba(10, 12, 14, 0.88)),
+          #111418;
+        box-shadow: var(--shadow);
+      }
+
+      .mesh-card::before {
+        position: absolute;
+        inset: 0;
+        content: "";
+        background:
+          linear-gradient(rgba(214, 255, 107, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(214, 255, 107, 0.035) 1px, transparent 1px);
+        background-size: 42px 42px;
+        opacity: 0.54;
+      }
+
+      .mesh-head {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 16px 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .mesh-head b {
+        color: var(--accent);
+        font-family: "JetBrains Mono", "IBM Plex Mono", SFMono-Regular, monospace;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .mesh-svg {
+        position: relative;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        height: 360px;
+      }
+
+      .mesh-path {
+        fill: none;
+        stroke: rgba(148, 163, 184, 0.38);
+        stroke-width: 2;
+      }
+
+      .mesh-path.accent {
+        stroke: rgba(214, 255, 107, 0.64);
+      }
+
+      .mesh-node rect {
+        fill: #111418;
+        stroke: rgba(255, 255, 255, 0.38);
+        stroke-width: 1.4;
+      }
+
+      .mesh-node.accent rect {
+        stroke: rgba(214, 255, 107, 0.72);
+        fill: #121906;
+      }
+
+      .mesh-node text {
+        fill: #f3f0ea;
+        font-family:
+          "Geist",
+          "IBM Plex Sans",
+          ui-sans-serif,
+          system-ui,
+          sans-serif;
+        font-size: 13px;
+        font-weight: 720;
+      }
+
+      .mesh-node .sub {
+        fill: #9ca3af;
+        font-family: "JetBrains Mono", "IBM Plex Mono", SFMono-Regular, monospace;
+        font-size: 11px;
+        font-weight: 500;
+      }
+
+      .hero-callout {
+        position: absolute;
+        z-index: 2;
+        max-width: 210px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 15px;
+        background: rgba(8, 10, 12, 0.86);
+        box-shadow: 0 18px 46px rgba(0, 0, 0, 0.34);
+        padding: 13px 14px;
+      }
+
+      .hero-callout strong,
+      .callout strong {
+        display: block;
+        color: var(--text);
+        font-size: 14px;
+      }
+
+      .hero-callout span,
+      .callout span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .hero-callout.scan {
+        top: 72px;
+        right: 22px;
+      }
+
+      .hero-callout.unknown {
+        right: 34px;
+        bottom: 32px;
+        border-color: rgba(232, 199, 102, 0.32);
+      }
+
+      .hero-callout.report {
+        left: 22px;
+        bottom: 44px;
       }
 
       .eyebrow {
@@ -259,8 +414,8 @@
       h1 {
         margin: 24px 0 0;
         max-width: 840px;
-        font-size: clamp(58px, 8vw, 112px);
-        line-height: 0.9;
+        font-size: clamp(50px, 5.7vw, 78px);
+        line-height: 0.94;
       }
 
       .lead {
@@ -289,6 +444,7 @@
       .hero-metrics {
         display: grid;
         width: min(780px, 100%);
+        grid-column: 1 / -1;
         grid-template-columns: repeat(4, 1fr);
         gap: 1px;
         margin-top: 70px;
@@ -396,18 +552,33 @@
 
       .showcase::before {
         position: absolute;
+        z-index: 0;
         inset: -18% 0;
         content: "";
-        background-image: url("screenshots/topology.png");
-        background-position: center;
-        background-size: cover;
-        opacity: 0.18;
-        transform: translate3d(0, calc(var(--parallax-y, 0px) * 0.09), 0) scale(1.12);
-        filter: saturate(0.78);
+        background:
+          linear-gradient(120deg, rgba(8, 10, 12, 0.96) 0%, rgba(8, 10, 12, 0.66) 58%, rgba(8, 10, 12, 0.94) 100%),
+          repeating-linear-gradient(90deg, rgba(214, 255, 107, 0.04) 0 1px, transparent 1px 78px),
+          repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 78px);
+        opacity: 0.86;
+        transform: translate3d(0, calc(var(--parallax-y, 0px) * 0.06), 0) scale(1.04);
+      }
+
+      .showcase::after {
+        position: absolute;
+        z-index: 0;
+        inset: 0;
+        content: "";
+        background:
+          linear-gradient(30deg, transparent 17%, rgba(214, 255, 107, 0.1) 17.15%, transparent 17.3%),
+          linear-gradient(142deg, transparent 62%, rgba(148, 163, 184, 0.12) 62.12%, transparent 62.32%),
+          linear-gradient(88deg, transparent 70%, rgba(214, 255, 107, 0.08) 70.12%, transparent 70.3%);
+        opacity: 0.48;
+        transform: translate3d(0, calc(var(--parallax-y, 0px) * -0.035), 0);
       }
 
       .showcase-inner {
         position: relative;
+        z-index: 1;
         display: grid;
         grid-template-columns: minmax(0, 0.72fr) minmax(460px, 1fr);
         gap: 56px;
@@ -415,6 +586,7 @@
       }
 
       .panel {
+        position: relative;
         border: 1px solid var(--line);
         border-radius: 26px;
         background: rgba(17, 20, 24, 0.84);
@@ -455,6 +627,48 @@
         background: #0b0d0f;
       }
 
+      .visual-frame .app-shot {
+        filter: saturate(0.96) contrast(1.02);
+      }
+
+      .visual-frame::after {
+        position: absolute;
+        inset: 38px 0 0;
+        content: "";
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, rgba(8, 10, 12, 0.35), transparent 36%, rgba(8, 10, 12, 0.22)),
+          linear-gradient(180deg, transparent 62%, rgba(8, 10, 12, 0.62));
+      }
+
+      .callout {
+        position: absolute;
+        z-index: 2;
+        width: min(238px, calc(100% - 32px));
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        border-radius: 16px;
+        background: rgba(8, 10, 12, 0.88);
+        box-shadow: 0 20px 54px rgba(0, 0, 0, 0.38);
+        padding: 14px 15px;
+      }
+
+      .callout.score {
+        top: 64px;
+        right: 18px;
+        border-color: rgba(214, 255, 107, 0.32);
+      }
+
+      .callout.queue {
+        left: 18px;
+        bottom: 20px;
+        border-color: rgba(232, 199, 102, 0.26);
+      }
+
+      .callout.pdf {
+        right: 18px;
+        bottom: 20px;
+      }
+
       .report-list {
         display: grid;
         gap: 12px;
@@ -487,17 +701,20 @@
 
       .download::before {
         position: absolute;
+        z-index: 0;
         inset: 0;
         content: "";
-        background-image: url("screenshots/dashboard.png");
-        background-position: center;
-        background-size: cover;
-        opacity: 0.15;
-        transform: translate3d(0, calc(var(--parallax-y, 0px) * 0.07), 0) scale(1.08);
+        background:
+          repeating-linear-gradient(90deg, rgba(214, 255, 107, 0.045) 0 1px, transparent 1px 92px),
+          repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.032) 0 1px, transparent 1px 92px),
+          linear-gradient(132deg, rgba(214, 255, 107, 0.08) 0 1px, transparent 1px 44%, rgba(148, 163, 184, 0.11) 44.12%, transparent 44.28%);
+        opacity: 0.44;
+        transform: translate3d(0, calc(var(--parallax-y, 0px) * 0.04), 0) scale(1.04);
       }
 
       .download::after {
         position: absolute;
+        z-index: 0;
         inset: 0;
         content: "";
         background: linear-gradient(180deg, #080a0c 0%, rgba(8, 10, 12, 0.82) 44%, #080a0c 100%);
@@ -561,9 +778,36 @@
           background: linear-gradient(180deg, rgba(8, 10, 12, 0.84) 0%, #080a0c 100%);
         }
 
-        .hero-topology,
         .scroll-cue {
           display: none;
+        }
+
+        .network-backdrop svg {
+          right: -180px;
+          width: 620px;
+          min-width: 0;
+          opacity: 0.52;
+        }
+
+        .hero-grid {
+          grid-template-columns: 1fr;
+          gap: 34px;
+        }
+
+        .hero-copy {
+          padding-top: 28px;
+        }
+
+        .hero-visual {
+          transform: none;
+        }
+
+        .mesh-card {
+          min-height: 390px;
+        }
+
+        .mesh-svg {
+          height: 320px;
         }
 
         .hero-metrics,
@@ -598,6 +842,22 @@
 
         .hero-metrics {
           grid-template-columns: 1fr;
+        }
+
+        .hero-callout,
+        .callout {
+          position: relative;
+          inset: auto;
+          width: auto;
+          margin: 12px 14px;
+        }
+
+        .hero-callout.report {
+          margin-bottom: 16px;
+        }
+
+        .visual-frame::after {
+          display: none;
         }
 
         .footer-row {
@@ -635,8 +895,26 @@
       <main>
         <section class="hero">
           <div class="scan-field" aria-hidden="true"></div>
-          <img class="hero-topology" src="screenshots/topology.png" alt="" aria-hidden="true" />
-          <div class="wrap">
+          <div class="network-backdrop" aria-hidden="true">
+            <svg viewBox="0 0 760 560" fill="none">
+              <path d="M83 332 C182 224 252 246 333 178 S518 92 664 156" stroke="rgba(214,255,107,0.22)" stroke-width="1.4" />
+              <path d="M118 426 C248 292 376 314 452 254 S588 214 704 278" stroke="rgba(148,163,184,0.18)" stroke-width="1.2" />
+              <path d="M194 118 C288 180 356 162 440 104 S590 62 702 98" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+              <g fill="rgba(214,255,107,0.9)">
+                <circle cx="83" cy="332" r="4" />
+                <circle cx="333" cy="178" r="4" />
+                <circle cx="664" cy="156" r="4" />
+              </g>
+              <g fill="rgba(148,163,184,0.7)">
+                <circle cx="118" cy="426" r="3" />
+                <circle cx="452" cy="254" r="3" />
+                <circle cx="704" cy="278" r="3" />
+                <circle cx="194" cy="118" r="3" />
+                <circle cx="440" cy="104" r="3" />
+              </g>
+            </svg>
+          </div>
+          <div class="wrap hero-grid">
             <div class="hero-copy">
               <span class="eyebrow"><span class="pulse"></span> Local network documentation</span>
               <h1>Document the network before it becomes a problem.</h1>
@@ -648,6 +926,77 @@
                 <a class="button secondary" href="#workflow">Explore workflow</a>
               </div>
               <p class="note">Preview build for macOS Apple Silicon. Only scan networks you own or have permission to document.</p>
+            </div>
+
+            <div class="hero-visual" aria-hidden="true">
+              <div class="mesh-card">
+                <div class="mesh-head">
+                  <span>Live topology preview</span>
+                  <b>Local only</b>
+                </div>
+                <svg class="mesh-svg" viewBox="0 0 560 360" fill="none">
+                  <path class="mesh-path accent" d="M62 178 C126 112 196 118 244 104" />
+                  <path class="mesh-path" d="M244 104 C304 88 336 94 398 74" />
+                  <path class="mesh-path" d="M244 104 C304 144 316 172 382 184" />
+                  <path class="mesh-path" d="M382 184 C426 154 458 150 504 158" />
+                  <path class="mesh-path" d="M382 184 C432 210 458 238 498 274" />
+                  <path class="mesh-path" d="M382 184 C330 230 300 258 236 288" />
+                  <path class="mesh-path" d="M382 184 C302 178 256 194 182 228" />
+
+                  <g class="mesh-node accent">
+                    <rect x="28" y="152" width="92" height="52" rx="14" />
+                    <text x="48" y="176">Internet</text>
+                    <text class="sub" x="48" y="193">WAN</text>
+                  </g>
+                  <g class="mesh-node accent">
+                    <rect x="202" y="74" width="112" height="60" rx="14" />
+                    <text x="222" y="99">Gateway</text>
+                    <text class="sub" x="222" y="117">192.168.1.1</text>
+                  </g>
+                  <g class="mesh-node">
+                    <rect x="358" y="44" width="112" height="54" rx="14" />
+                    <text x="378" y="68">AP</text>
+                    <text class="sub" x="378" y="86">Ubiquiti</text>
+                  </g>
+                  <g class="mesh-node">
+                    <rect x="342" y="154" width="114" height="60" rx="14" />
+                    <text x="362" y="178">Endpoints</text>
+                    <text class="sub" x="362" y="196">6 devices</text>
+                  </g>
+                  <g class="mesh-node">
+                    <rect x="448" y="132" width="86" height="50" rx="13" />
+                    <text x="468" y="154">MacBook</text>
+                    <text class="sub" x="468" y="171">Apple</text>
+                  </g>
+                  <g class="mesh-node">
+                    <rect x="454" y="252" width="78" height="48" rx="13" />
+                    <text x="474" y="274">TV</text>
+                    <text class="sub" x="474" y="291">Samsung</text>
+                  </g>
+                  <g class="mesh-node">
+                    <rect x="190" y="264" width="96" height="52" rx="13" />
+                    <text x="210" y="286">Printer</text>
+                    <text class="sub" x="210" y="303">Brother</text>
+                  </g>
+                  <g class="mesh-node">
+                    <rect x="128" y="206" width="110" height="52" rx="13" />
+                    <text x="148" y="228">Unknown</text>
+                    <text class="sub" x="148" y="245">Needs label</text>
+                  </g>
+                </svg>
+                <div class="hero-callout scan">
+                  <strong>Scan complete</strong>
+                  <span>Vendors, roles, and confidence summarized for review.</span>
+                </div>
+                <div class="hero-callout report">
+                  <strong>Client-ready output</strong>
+                  <span>Inventory, topology, and recommendations become a PDF handoff.</span>
+                </div>
+                <div class="hero-callout unknown">
+                  <strong>Unknowns stay visible</strong>
+                  <span>Devices that need naming are flagged before export.</span>
+                </div>
+              </div>
             </div>
 
             <div class="hero-metrics" aria-label="Product highlights">
@@ -698,13 +1047,25 @@
                 <li><span>Handoff Packet</span><b>Technicians</b></li>
               </ul>
             </div>
-            <div class="panel">
+            <div class="panel visual-frame">
               <div class="window-bar" aria-hidden="true">
                 <span class="dot"></span>
                 <span class="dot"></span>
                 <span class="dot"></span>
               </div>
               <img class="app-shot" src="screenshots/topology.png" alt="NetDoc Studio topology screenshot" />
+              <div class="callout score">
+                <strong>Topology fits the handoff</strong>
+                <span>Infrastructure, endpoints, and unknowns grouped for quick review.</span>
+              </div>
+              <div class="callout queue">
+                <strong>Review queue built in</strong>
+                <span>Unknown devices stay visible until a technician labels them.</span>
+              </div>
+              <div class="callout pdf">
+                <strong>Export-ready map</strong>
+                <span>Use the canvas as the visual center of the PDF report.</span>
+              </div>
             </div>
           </div>
         </section>
